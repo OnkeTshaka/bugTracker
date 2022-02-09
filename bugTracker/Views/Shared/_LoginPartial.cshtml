@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNet.Identity
+@using System.Security.Claims
+@if (Request.IsAuthenticated)
+{
+    //Claims
+    var identity = (ClaimsIdentity)User.Identity;
+    var name = identity.FindFirstValue(ClaimTypes.GivenName) ?? identity.GetUserName();
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <i class="fas fa-user-check"></i> @Html.ActionLink(name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li>&nbsp; &nbsp;</li>
+            <li><a style="list-style-type:none;" href="javascript:document.getElementById('logoutForm').submit()"><i class="fas fa-sign-out-alt"></i> Log off</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><i class="fas fa-sign-in-alt"></i> @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>&nbsp;&nbsp;</li>
+        <li><i class="fas fa-user-edit"></i> @Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>&nbsp;&nbsp;</li>
+        <li><i class="fas fa-user-friends"></i> @Html.ActionLink("Demo", "Index", "Home", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    </ul>
+}
